@@ -40,5 +40,18 @@ if __name__ == "__main__":
     Q_table = np.zeros((16, 4))
     for i in range(100):
         train(env, 0.1, 0.9, Q_table)
+    print("Q-table: ")
     for i in range(len(Q_table)):
         print(Q_table[i])
+    print("Route:")
+    print("(0,0)", end = "")
+    state = env.start()
+    end = False
+    while(not end):
+        print("->",end="")
+        available_action = env.get_action(state)
+        action = epsilon_greedy(state, available_action, Q_table, 1)
+        next_state, reward, end = env.get_reward(state, action)
+        print('('+str(next_state[0])+','+str(next_state[1])+')', end ="")
+        state = next_state
+    print("")
